@@ -1,0 +1,25 @@
+{
+  "name": "aws-netcfg-util",
+  "version": "1.0.0",
+  "description": "A command-line utility for gaining operational insights about AWS network configuration",
+  "keywords": [
+    "AWS"
+  ],
+  "author": "Curt Beattie <spaceshaker.geo@yahoo.com>",
+  "license": "MIT",
+  "bin": {
+    "aws-netcfg-util": "dist/bin/aws-netcfg-util.js"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^13.7.4",
+    "typescript": "^3.8.2"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.624.0",
+    "commander": "^4.1.1",
+    "source-map-support": "^0.5.16"
+  }
+}
