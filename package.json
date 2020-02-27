@@ -5,6 +5,7 @@
   "keywords": [
     "AWS"
   ],
+  "homepage": "https://github.com/spaceshaker/aws-netcfg-util/blob/master/README.md",
   "author": "Curt Beattie <spaceshaker.geo@yahoo.com>",
   "license": "MIT",
   "bin": {
