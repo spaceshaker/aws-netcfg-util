@@ -148,10 +148,10 @@ export class VpcCidrCommandHandler extends AbstractCommandHandler {
   }
 
   async execute(): Promise<void> {
-    const inputFile: string = this.program.inputFile;
+    const dataFile: string = this.program.dataFile;
 
-    if (inputFile === undefined) {
-      console.error('Input file not provided');
+    if (dataFile === undefined) {
+      console.error('Data file not provided');
       process.exit(1);
     }
 
@@ -163,7 +163,7 @@ export class VpcCidrCommandHandler extends AbstractCommandHandler {
     }
 
     const result = await this.executeInternal({
-      inputFile,
+      inputFile: dataFile,
       outputFile,
       includeSubnets,
     });

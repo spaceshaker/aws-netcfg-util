@@ -14,11 +14,11 @@ npm install -g aws-netcfg-util
 Downloading AWS network information.
 
 ```
-aws-netcfg-util download --output-file output.json
+aws-netcfg-util download --data-file raw-data.json
 ```
 
 Generate a VPC CIDR block report in CSV format.
 
 ```
-aws-netcfg-util vpc-cidr --csv --input-file output.json --output-file output.csv
+aws-netcfg-util vpc-cidr --data-file raw-data.json --csv --output-file output.csv
 ```

@@ -14,24 +14,26 @@ export class Application {
 
     program.option('--json', 'output as JSON');
     program.option('--csv', 'output as CSV');
+    program.option('-f, --data-file <data-file>', 'the data file that stores AWS network configuration');
 
     program
         .command('download')
         .description('download AWS network configuration data')
         .option('--output-file <output-file>', 'the output file to store the downloaded data')
         .action(self => {
+          self.dataFile = program.dataFile;
           this.commandHandler = new DownloadCommandHandler(self, []);
         });
 
     program
         .command('vpc-cidr')
         .description('dump a CSV file containing VPC CIDR block mappings')
-        .option('--input-file <input-file>', 'the input file to pull data from')
         .option('--output-file <output-file>', 'the output file to write data to')
         .option('--include-subnets', 'include subnets in the output')
         .action(self => {
           self.csv = program.csv;
           self.json = program.json;
+          self.dataFile = program.dataFile;
           this.commandHandler = new VpcCidrCommandHandler(self, []);
         });
 

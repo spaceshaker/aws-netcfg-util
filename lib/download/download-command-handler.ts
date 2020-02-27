@@ -18,17 +18,17 @@ export class DownloadCommandHandler extends AbstractCommandHandler {
   }
 
   async execute(): Promise<void> {
-    const outputFile: string = this.program.outputFile;
+    const dataFile: string = this.program.dataFile;
 
-    if (outputFile === undefined) {
-      console.error('Output file not provided');
+    if (dataFile === undefined) {
+      console.error('Data file not provided');
       process.exit(1);
     }
 
     const awsAccountId = await this.accountIdProvider.getAwsAccountId();
 
     let dataset: MultiAccountNetworkConfigDataset;
-    if (!fs.existsSync(outputFile)) {
+    if (!fs.existsSync(dataFile)) {
       dataset = {
         accounts: {}
       };
@@ -37,9 +37,9 @@ export class DownloadCommandHandler extends AbstractCommandHandler {
         regions: {}
       };
 
-      await saveDataset(outputFile, dataset);
+      await saveDataset(dataFile, dataset);
     } else {
-      dataset = await loadDataset(outputFile);
+      dataset = await loadDataset(dataFile);
     }
 
     // Reset all regions for this account (in preparation for replacing them below)
@@ -60,6 +60,6 @@ export class DownloadCommandHandler extends AbstractCommandHandler {
 
     await Promise.all(downloaderResults$);
 
-    await saveDataset(outputFile, dataset);
+    await saveDataset(dataFile, dataset);
   }
 }
