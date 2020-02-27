@@ -30,6 +30,7 @@ export class Application {
         .description('dump a CSV file containing VPC CIDR block mappings')
         .option('--output-file <output-file>', 'the output file to write data to')
         .option('--include-subnets', 'include subnets in the output')
+        .option('--include-default-vpcs', 'include default VPCs in the output')
         .action(self => {
           self.csv = program.csv;
           self.json = program.json;

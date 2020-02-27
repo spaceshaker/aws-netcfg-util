@@ -70,6 +70,10 @@ export class VpcAdapter {
     return this.subnets$.filter(subnet => subnet.VpcId === this.vpcId).map(subnet => new SubnetAdapter(subnet));
   }
 
+  get defaultVpc(): boolean {
+    return this.vpc.IsDefault;
+  }
+
   getTag(key: string): Tag | undefined {
     const filteredTags = this.tags.filter(tag => tag.key === key);
     return filteredTags.length === 1 ? filteredTags[0] : undefined;
@@ -117,6 +121,7 @@ export interface VpcCidrInput {
   inputFile: string;
   outputFile?: string;
   includeSubnets: boolean;
+  includeDefaultVpcs: boolean;
 }
 
 export interface VpcCidrResult {
@@ -162,10 +167,16 @@ export class VpcCidrCommandHandler extends AbstractCommandHandler {
       includeSubnets = true;
     }
 
+    let includeDefaultVpcs = false;
+    if (this.program.includeDefaultVpcs) {
+      includeDefaultVpcs = true;
+    }
+
     const result = await this.executeInternal({
       inputFile: dataFile,
       outputFile,
       includeSubnets,
+      includeDefaultVpcs,
     });
 
     const outputStream: stream.Writable = outputFile === undefined ? process.stdout : fs.createWriteStream(outputFile);
@@ -257,6 +268,10 @@ export class VpcCidrCommandHandler extends AbstractCommandHandler {
         const thisRegion = thisAccount.regions[region.regionName];
 
         for (const vpc of region.vpcs) {
+          if (vpc.defaultVpc && !input.includeDefaultVpcs) {
+            continue;
+          }
+
           thisRegion.vpcs[vpc.vpcId] = {
             vpcCidrBlock: vpc.cidrBlock,
             name: vpc.getTag('Name')?.value || '',
