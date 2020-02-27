@@ -1,5 +1,7 @@
 # aws-netcfg-util
 
+![Node.js CI](https://github.com/spaceshaker/aws-netcfg-util/workflows/Node.js%20CI/badge.svg?branch=master)
+
 `aws-netcfg-util` is a command-line tool for for gaining operational insights about AWS network configurations.
 
 ## Getting Started
