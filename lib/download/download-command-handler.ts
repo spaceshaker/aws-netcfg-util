@@ -25,7 +25,15 @@ export class DownloadCommandHandler extends AbstractCommandHandler {
       process.exit(1);
     }
 
+    let verbose = false;
+    if (this.program.verbose) {
+      verbose = true;
+    }
+
     const awsAccountId = await this.accountIdProvider.getAwsAccountId();
+    if (verbose) {
+      console.log(`Running download for account ${awsAccountId}`);
+    }
 
     let dataset: MultiAccountNetworkConfigDataset;
     if (!fs.existsSync(dataFile)) {
@@ -51,7 +59,9 @@ export class DownloadCommandHandler extends AbstractCommandHandler {
 
     const downloaderResults$: Promise<any>[] = [];
     for (const region of regions) {
-      const downloader = RegionDownloader.create(region);
+      const downloader = RegionDownloader.create(region, {
+        verbose,
+      });
       const result$ = downloader.run().then(regionResult => {
         dataset.accounts[awsAccountId].regions[region] = regionResult;
       });

@@ -15,6 +15,7 @@ export class Application {
     program.option('--json', 'output as JSON');
     program.option('--csv', 'output as CSV');
     program.option('-f, --data-file <data-file>', 'the data file that stores AWS network configuration');
+    program.option('-v, --verbose', 'enable verbose logging');
 
     program
         .command('download')
@@ -22,6 +23,7 @@ export class Application {
         .option('--output-file <output-file>', 'the output file to store the downloaded data')
         .action(self => {
           self.dataFile = program.dataFile;
+          self.verbose = program.verbose;
           this.commandHandler = new DownloadCommandHandler(self, []);
         });
 

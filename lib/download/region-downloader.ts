@@ -1,18 +1,32 @@
 import * as AWS from 'aws-sdk';
 
+export interface RegionDownloaderOptions {
+  verbose?: boolean;
+}
+
 export class RegionDownloader {
+  private readonly verbose: boolean;
+
   constructor(
-      private readonly ec2: AWS.EC2
+      private readonly region: string,
+      private readonly ec2: AWS.EC2,
+      private readonly options?: RegionDownloaderOptions,
   ) {
+    this.verbose = options?.verbose || false;
   }
 
-  static create(region: string): RegionDownloader {
-    return new RegionDownloader(new AWS.EC2({
+  static create(region: string, options?: RegionDownloaderOptions): RegionDownloader {
+    const ec2 = new AWS.EC2({
       region,
-    }));
+    });
+    return new RegionDownloader(region, ec2, options);
   }
 
   async run(): Promise<any> {
+    if (this.verbose) {
+      console.log(`[${this.region}] Beginning network configuration download`);
+    }
+
     const vpcs$ = this.getVpcs();
     const subnets$ = this.getSubnets();
     const routeTables$ = this.getRouteTables();
@@ -26,6 +40,10 @@ export class RegionDownloader {
     const networkInterfaces$ = this.getNetworkInterfaces();
     const securityGroups$ = this.getSecurityGroups();
     const networkAcls$ = this.getNetworkAcls();
+
+    if (this.verbose) {
+      console.log(`[${this.region}] Waiting for tasks to complete`);
+    }
 
     await Promise.all([
         vpcs$,
@@ -42,6 +60,10 @@ export class RegionDownloader {
         securityGroups$,
         networkAcls$,
     ]);
+
+    if (this.verbose) {
+      console.log(`[${this.region}] Download complete`);
+    }
 
     return {
       vpcs: await vpcs$,
