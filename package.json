@@ -1,6 +1,6 @@
 {
   "name": "aws-netcfg-util",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A command-line utility for gaining operational insights about AWS network configuration",
   "keywords": [
     "AWS"
