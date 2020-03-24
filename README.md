@@ -17,8 +17,24 @@ Downloading AWS network information.
 aws-netcfg-util download --data-file raw-data.json
 ```
 
-Generate a VPC CIDR block report in CSV format.
+See below for how to run various reports.
+
+## What can it do?
+
+### Generate an account-level VPC CIDR data dump
 
 ```
 aws-netcfg-util vpc-cidr --data-file raw-data.json --csv --output-file output.csv
+```
+
+### Generate a global VPC CIDR dump
+
+```
+aws-netcfg-util global-vpc-cidr --data-file raw-data.json --csv --output-file output.csv --include-default-vpc
+```
+
+### Find duplicate/overlaping VPC CIDR blocks
+
+```
+aws-netcfg-util global-vpc-cidr --data-file raw-data.json --csv --output-file output.csv --duplicates-only
 ```

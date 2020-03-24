@@ -45,8 +45,6 @@ export class SubnetAdapter {
   }
 }
 
-
-
 export class VpcAdapter {
   constructor(
       private readonly vpc: any,
@@ -253,7 +251,7 @@ export class VpcCidrCommandHandler extends AbstractCommandHandler {
     const vpcCidrResult: VpcCidrResult = {
       accounts: {}
     };
-    const  allAccounts = vpcCidrResult.accounts;
+    const allAccounts = vpcCidrResult.accounts;
 
     for (const account of datasetAdapter.accounts) {
       allAccounts[account.accountId] = {

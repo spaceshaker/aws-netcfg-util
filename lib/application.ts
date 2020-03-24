@@ -3,6 +3,7 @@ import * as AWS from 'aws-sdk';
 import {CommandHandler} from "./command-handler";
 import {DownloadCommandHandler} from "./download/download-command-handler";
 import {VpcCidrCommandHandler} from "./vpc-cidr/vpc-cidr-command-handler";
+import {GlobalVpcCidrCommandHandler} from "./global-vpc-cidr/global-vpc-cidr-command-handler";
 
 export class Application {
   private commandHandler?: CommandHandler;
@@ -38,6 +39,19 @@ export class Application {
           self.json = program.json;
           self.dataFile = program.dataFile;
           this.commandHandler = new VpcCidrCommandHandler(self, []);
+        });
+
+    program
+        .command('global-vpc-cidr')
+        .description('dump global VPC CIDR blocks in use')
+        .option('--output-file <output-file>', 'the output file to write data to')
+        .option('--include-default-vpc', 'include default VPC in the output')
+        .option('--duplicates-only', 'include only VPCs used more than once')
+        .action(self => {
+          self.csv = program.csv;
+          self.json = program.json;
+          self.dataFile = program.dataFile;
+          this.commandHandler = new GlobalVpcCidrCommandHandler(self, []);
         });
 
     program.parse(process.argv);
